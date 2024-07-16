@@ -1,26 +1,44 @@
-import { useEffect, useState } from "react";
 import axios from 'axios';
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
+import { useFetchParties } from '../hooks';
+import CardSkeleton from "./CardSkeleton";
 
 const Voting = () => {
     const navigate = useNavigate();
-    const [candidates, setCandidates] = useState([]);
+    const {candidates, loading} = useFetchParties();
+    const logout = () => {
+        localStorage.removeItem("authorization");
+        toast.success("Logged out");
+        setTimeout(() => {
+            navigate("/");
+        }, 800);
+    };
+    setTimeout(()=>{
+        logout();
+    },50000)
+    if(loading)
+    {
+        return(
+            <div className="p-4 grid grid-rows-2">
+            <div className="flex justify-end items-start"><button id="Button" className="bg-red-500 font-bold py-2 px-4 text-white" onClick={logout}>
+                LOG OUT
+            </button></div>
+            <div className=" flex justify-center "><h1 className="text-2xl font-bold mb-4">LIST OF PARTIES</h1></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <CardSkeleton></CardSkeleton>
+            <CardSkeleton></CardSkeleton>
+            <CardSkeleton></CardSkeleton>
+            <CardSkeleton></CardSkeleton>
+            <CardSkeleton></CardSkeleton>
+            <CardSkeleton></CardSkeleton>
+            <CardSkeleton></CardSkeleton>
+            <CardSkeleton></CardSkeleton>
+            </div>
+        </div>
+        )
+    }
     const token = localStorage.getItem("authorization");
-
-    useEffect(() => {
-        const getCandidates = async () => {
-            try {
-                const response = await axios.get('https://onevote-backend.onrender.com/voter/getList');
-                setCandidates(response.data || []);
-            } catch (error) {
-                toast.error("Error fetching candidates");
-                console.error("Fetch error:", error);
-            }
-        };
-        getCandidates();
-    }, []);
-
     const vote = async (name) => {
         if (!token) {
             toast.error("Login for voting");
@@ -42,16 +60,7 @@ const Voting = () => {
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem("authorization");
-        toast.success("Logged out");
-        setTimeout(() => {
-            navigate("/");
-        }, 800);
-    };
-    setTimeout(()=>{
-        logout();
-    },50000)
+    
 
     const Card = ({ candidate }) => {
         return (

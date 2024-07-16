@@ -1,9 +1,9 @@
 import './App.css';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import Landing from './Components/Landing';
 import Voting from './Components/Voting';
 import SignUp from './Components/SignUp';
 import AdminPanel from './Components/AdminPanel';
+import Landing from './Components/Landing';
 
 function App() {
   return (

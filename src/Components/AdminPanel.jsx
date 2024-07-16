@@ -137,7 +137,7 @@ const AdminPanel = () => {
                     </button>
                     </div>
                 </div>
-                <Result resetTrigger={resetTrigger}/>
+                                  <Result resetTrigger={resetTrigger}/>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {party.length > 0 ? (
